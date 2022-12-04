@@ -6,14 +6,13 @@ from appointments.models import Patient, User
 @app.route('/')
 @app.route("/home")
 def home():
-    if not 'username' in session:
+    if not 'username' and 'userid' in session:
         resp = jsonify({'message': 'Unauthorized'})
         resp.status_code = 401
         return resp
     else:
-        username = session['username']
-        loggeduser = User.query.filter_by(username=username).first()
-        patientsForUser=Patient.query.filter_by(owner=loggeduser.id)
+        userid = session['userid']
+        patientsForUser=Patient.query.filter_by(owner=userid)
         return jsonify({'patients': patientsForUser})
 
 
@@ -30,6 +29,7 @@ def login():
                 attempted_password=_password
         ):
             session['username'] = _username
+            session['userid'] = attempted_user.id
             return jsonify({'message': 'You are logged in successfully'})
     else:
         resp = jsonify({'message': 'Bad Request - invalid credendtials'})
