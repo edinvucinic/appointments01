@@ -41,4 +41,5 @@ def login():
 def logout():
     if 'username' in session:
         session.pop('username', None)
+        session.pop('userid', None)
     return jsonify({'message': 'You successfully logged out'})
