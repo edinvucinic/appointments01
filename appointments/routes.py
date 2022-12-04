@@ -29,6 +29,7 @@ def login():
         if attempted_user and attempted_user.check_password_correction(
                 attempted_password=_password
         ):
+            session['username'] = _username
             return jsonify({'message': 'You are logged in successfully'})
     else:
         resp = jsonify({'message': 'Bad Request - invalid credendtials'})
